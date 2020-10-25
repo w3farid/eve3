@@ -15,12 +15,12 @@
                     <fieldset>
                         <legend>Student form</legend>
                         <h:form>
-                            <p:growl id="growl"  sticky="true" />  
+                            <h:messages styleClass="alert alert-primary" />  
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="id">ID</label>
-                                        <p:inputText id="id"
+                                        <p:inputText disabled="${user.isEdit}" id="id"
                                                      value="#{user.id}"
                                                      styleClass="form-control" 
                                                      placeholder="Please enter your id"/>                               
@@ -70,7 +70,18 @@
                                 <label for="address">Address</label>
                                 <p:inputTextarea value="#{user.address}" styleClass="form-control" id="address" rows="3" cols="10"/>
                             </div>
-                            <p:commandButton action="#{user.store()}" styleClass="btn btn-primary" value="Save" update="@form"/>
+
+
+                            <c:choose>
+                                <c:when test="#{user.isEdit}">
+                                    <p:commandButton action="${user.update()}"  styleClass="btn btn-primary" value="Update" update="@form"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <p:commandButton action="#{user.store()}" styleClass="btn btn-primary" value="Save" update="@form"/>
+
+                                </c:otherwise>
+
+                            </c:choose>
 
                         </h:form>
                     </fieldset>
@@ -91,17 +102,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="u1" items="#{user.showUserList}">
+                        <c:forEach var="u1" items="#{user.userList}">
                             <tr>
                                 <td scope="row">${u1.id}</td>
                                 <td scope="row">${u1.name}</td>
                                 <td scope="row">${u1.mobile}</td>
                                 <td scope="row">${u1.gender}</td>
                                 <td scope="row">${u1.course}</td>
-                                <td scope="row">--</td>
+                                <td scope="row">
+                                    <c:forEach var="s" items="${u1.skill}">
+                                        <span>${s}</span>
+                                    </c:forEach>
+                                </td>
                                 <td scope="row">${u1.address}</td>
                                 <td scope="row">
-                                    <p:commandLink value="Edit"/>
+                                    <h:form>
+                                        <h:commandButton action="${user.edit(u1.id)}" value="Edit"/>
+                                        <h:commandButton action="${user.delete(u1.id)}"  value="Delete"/>
+                                    </h:form>
                                 </td>
                             </tr>
                         </c:forEach> 
