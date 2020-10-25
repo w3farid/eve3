@@ -15,15 +15,16 @@
                     <fieldset>
                         <legend>Student form</legend>
                         <h:form>
-                            <h:messages styleClass="alert alert-primary" />  
+                            <p:growl id="growl" sticky="true" />  
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="id">ID</label>
-                                        <p:inputText disabled="${user.isEdit}" id="id"
+                                        <p:inputText readonly="${user.isEdit}" id="id"
                                                      value="#{user.id}"
                                                      styleClass="form-control" 
                                                      placeholder="Please enter your id"/>                               
+                                        <h:inputHidden value="#{user.id}"/>
 
                                     </div>
                                     <div class="col-md-6">
@@ -71,17 +72,10 @@
                                 <p:inputTextarea value="#{user.address}" styleClass="form-control" id="address" rows="3" cols="10"/>
                             </div>
 
-
-                            <c:choose>
-                                <c:when test="#{user.isEdit}">
-                                    <p:commandButton action="${user.update()}"  styleClass="btn btn-primary" value="Update" update="@form"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <p:commandButton action="#{user.store()}" styleClass="btn btn-primary" value="Save" update="@form"/>
-
-                                </c:otherwise>
-
-                            </c:choose>
+                            
+                            <p:commandButton action="#{user.store()}" styleClass="btn btn-primary" value="Save" update="@form"/>
+                            <p:commandButton action="#{user.updateData()}" styleClass="btn btn-primary" value="Update" update="@form"/>
+                            
 
                         </h:form>
                     </fieldset>

@@ -68,7 +68,7 @@ public class User {
         return "index.xhtml";
     }
 
-    public String update() {
+    public String updateData() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             conn = DBAccess.getConnection();
